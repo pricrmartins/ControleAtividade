@@ -36,6 +36,9 @@ namespace ControleAtividade
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
+            // registrar o serviço
+            services.AddTransient<IProfessorService, ProfessorService>();
+
             services.AddMvc();
         }
 

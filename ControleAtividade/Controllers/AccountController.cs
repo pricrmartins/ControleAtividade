@@ -25,19 +25,20 @@ namespace ControleAtividade.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-        private readonly ApplicationDbContext _applicationDbContext;
+        private readonly IProfessorService _professorService;
+
         public AccountController(
             UserManager<ApplicationUser> userManager,
+            IProfessorService professorService,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger,
-            ApplicationDbContext applicationDbContext)
+            ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
-            _applicationDbContext = applicationDbContext;
+            _professorService = professorService;
         }
 
         [TempData]
@@ -223,13 +224,16 @@ namespace ControleAtividade.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Nome, Email = model.Email };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // teste criação usuario
-                    _applicationDbContext.Usuarios.Add(new Usuario { UsuarioAplicacao = user.Id, Matricula = model.Matricula, Nome = model.Nome });
-                    _applicationDbContext.SaveChanges();
+                    // teste criação usuario professor
+                   var id =  await _professorService.SetProfessorAsync(new Professor
+                    {
+                        Usuario = new Usuario { UsuarioAplicacao = user.Id, Matricula = model.Matricula, Nome = model.Nome }
+                    });
+                    
 
                     _logger.LogInformation("User created a new account with password.");
 
