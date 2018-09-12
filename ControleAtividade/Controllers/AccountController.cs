@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using ControleAtividade.Models;
 using ControleAtividade.Models.AccountViewModels;
 using ControleAtividade.Services;
+using ControleAtividade.Data;
 
 namespace ControleAtividade.Controllers
 {
@@ -24,17 +25,19 @@ namespace ControleAtividade.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
-
+        private readonly ApplicationDbContext _applicationDbContext;
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            ApplicationDbContext applicationDbContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _applicationDbContext = applicationDbContext;
         }
 
         [TempData]
@@ -224,6 +227,10 @@ namespace ControleAtividade.Controllers
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    // teste criação usuario
+                    _applicationDbContext.Usuarios.Add(new Usuario { UsuarioAplicacao = user.Id, Matricula = model.Matricula, Nome = model.Nome });
+                    _applicationDbContext.SaveChanges();
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

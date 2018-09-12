@@ -10,6 +10,17 @@ namespace ControleAtividade.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public virtual DbSet<Imagem> Imagens { get; set; }
+        public virtual DbSet<Usuario> Usuarios { get; set; }
+        public virtual DbSet<Professor> Professores { get; set; }
+        public virtual DbSet<Turma> Turmas { get; set; }
+        public virtual DbSet<Aluno> Alunos { get; set; }
+        public virtual DbSet<Atividade> Atividades { get; set; }
+        public virtual DbSet<Questao> Questoes { get; set; }
+        public virtual DbSet<Opcao> Opcoes { get; set; }
+        public virtual DbSet<Atividade_Aluno> Atividades_Aluno { get; set; }
+        public virtual DbSet<Questao_Aluno> Questoes_Aluno { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
