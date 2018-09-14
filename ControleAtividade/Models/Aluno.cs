@@ -17,11 +17,12 @@ namespace ControleAtividade.Models
         [ForeignKey("Turma")]
         public string CodigoTurma { get; set; }
 
-        [ForeignKey("Usuario")]
+        [ForeignKey("ApplicationUser")]
         [Required]
-        public string Matricula { get; set; }
+        public string IdApplicationUser { get; set; }
 
-        public Usuario Usuario { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
+
         public Turma Turma { get; set; }
     }
 }

@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace ControleAtividade.Data.Migrations
+namespace ControleAtividade.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180912172809_TabelaSistema")]
-    partial class TabelaSistema
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,14 +27,14 @@ namespace ControleAtividade.Data.Migrations
 
                     b.Property<string>("CodigoTurma");
 
-                    b.Property<string>("Matricula")
+                    b.Property<string>("IdApplicationUser")
                         .IsRequired();
 
                     b.HasKey("Id");
 
                     b.HasIndex("CodigoTurma");
 
-                    b.HasIndex("Matricula");
+                    b.HasIndex("IdApplicationUser");
 
                     b.ToTable("Aluno");
                 });
@@ -176,12 +175,12 @@ namespace ControleAtividade.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Matricula")
+                    b.Property<string>("IdApplicationUser")
                         .IsRequired();
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Matricula");
+                    b.HasIndex("IdApplicationUser");
 
                     b.ToTable("Professor");
                 });
@@ -378,9 +377,9 @@ namespace ControleAtividade.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CodigoTurma");
 
-                    b.HasOne("ControleAtividade.Models.Usuario", "Usuario")
+                    b.HasOne("ControleAtividade.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("Matricula")
+                        .HasForeignKey("IdApplicationUser")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -402,9 +401,9 @@ namespace ControleAtividade.Data.Migrations
 
             modelBuilder.Entity("ControleAtividade.Models.Professor", b =>
                 {
-                    b.HasOne("ControleAtividade.Models.Usuario", "Usuario")
+                    b.HasOne("ControleAtividade.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("Matricula")
+                        .HasForeignKey("IdApplicationUser")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

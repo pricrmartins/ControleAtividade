@@ -11,5 +11,11 @@ namespace ControleAtividade.Services
         Task<IEnumerable<Professor>> GetProfessoresAsync();
 
         Task<int> SetProfessorAsync(Professor professor);
+
+        Task<Professor> GetProfessorPorMatriculaAsync(string matricula);
+
+        Task<int> UpdateProfessorAsync(Professor professor);
+
+        Task<bool> ProfessorExists(string matricula);
     }
 }

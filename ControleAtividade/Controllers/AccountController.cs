@@ -224,14 +224,14 @@ namespace ControleAtividade.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Nome, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Matricula, Email = model.Email, Matricula = model.Matricula };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     // teste criação usuario professor
                    var id =  await _professorService.SetProfessorAsync(new Professor
                     {
-                        Usuario = new Usuario { UsuarioAplicacao = user.Id, Matricula = model.Matricula, Nome = model.Nome }
+                       IdApplicationUser = user.Id
                     });
                     
 

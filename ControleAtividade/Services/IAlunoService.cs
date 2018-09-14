@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace ControleAtividade.Services
 {
-    interface IAlunoService
+    public interface IAlunoService
     {
-        Task<IEnumerable<Aluno>> GetItemAsync();
+        Task<IEnumerable<Aluno>> GetAlunosAsync();
+
+        Task<int> SetAlunoAsync(Aluno aluno);
+
+        Task<Aluno> GetAlunoPorMatriculaAsync(string matricula);
+
+        Task<int> UpdateAlunoAsync(Aluno aluno);
     }
 }

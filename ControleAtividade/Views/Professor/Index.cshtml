@@ -1,0 +1,64 @@
+﻿@using System.Linq
+@model ControleAtividade.Models.ProfessorViewModels.LoginProfessorViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="col-md-12">
+    <br />
+    <br />
+    <div class="col-md-4">
+
+    </div>
+    <div class="form-horizontal">
+        <div class="col-md-4">
+            <div class="">
+                <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+                    <div class="form-group">
+                        <h2>@ViewData["Title"]</h2>
+                        <h4 class="">Entre com uma conta cadastrada.</h4>
+                    </div>
+                    <br />
+                    <div class="">
+                        <div asp-validation-summary="All" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Matricula"></label>
+                            <input asp-for="Matricula" class="form-control" />
+                            <span asp-validation-for="Matricula" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Senha"></label>
+                            <input asp-for="Senha" class="form-control" />
+                            <span asp-validation-for="Senha" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label asp-for="Lembrar">
+                                    <input asp-for="Lembrar" />
+                                    @Html.DisplayNameFor(m => m.Lembrar)
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-default">Login</button>
+                        </div>
+                        <div class="form-group">
+                            <p>
+                                <a asp-action="ForgotPassword">Forgot your password?</a>
+                            </p>
+                            <p>
+                                <a asp-action="Cadastrar" asp-route-returnurl="@ViewData["ReturnUrl"]">Cadastrar um novo usuário?</a>
+                            </p>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
