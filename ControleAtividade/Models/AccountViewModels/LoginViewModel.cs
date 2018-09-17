@@ -9,10 +9,11 @@ namespace ControleAtividade.Models.AccountViewModels
     public class LoginViewModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        [StringLength(11, ErrorMessage = "O campo deve ter 11 caracteres.", MinimumLength = 11)]
+        public string CPF { get; set; }
 
         [Required]
+        [Display(Name = "Senha")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 

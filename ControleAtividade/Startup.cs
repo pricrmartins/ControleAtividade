@@ -60,8 +60,8 @@ namespace ControleAtividade
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
             // Add application services.
@@ -69,6 +69,7 @@ namespace ControleAtividade
 
             // registrar o serviço
             services.AddTransient<IProfessorService, ProfessorService>();
+            services.AddTransient<IAlunoService, AlunoService>();
 
             services.AddMvc();
 

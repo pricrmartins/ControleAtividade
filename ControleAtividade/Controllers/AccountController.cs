@@ -65,11 +65,11 @@ namespace ControleAtividade.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var result = await _signInManager.PasswordSignInAsync(model.CPF, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index","Perfil");
                 }
                 if (result.RequiresTwoFactor)
                 {
@@ -132,7 +132,7 @@ namespace ControleAtividade.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User with ID {UserId} logged in with 2fa.", user.Id);
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Index", "Perfil");
             }
             else if (result.IsLockedOut)
             {
@@ -186,7 +186,7 @@ namespace ControleAtividade.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User with ID {UserId} logged in with a recovery code.", user.Id);
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Index", "Perfil");
             }
             if (result.IsLockedOut)
             {
@@ -224,26 +224,18 @@ namespace ControleAtividade.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Matricula, Email = model.Email, Matricula = model.Matricula };
+                var user = new ApplicationUser { UserName = model.CPF, Email = model.Email, Nome = model.Nome };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    // teste criação usuario professor
-                   var id =  await _professorService.SetProfessorAsync(new Professor
-                    {
-                       IdApplicationUser = user.Id
-                    });
-                    
-
                     _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
                     await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Perfil");
                 }
                 AddErrors(result);
             }
@@ -292,7 +284,7 @@ namespace ControleAtividade.Controllers
             if (result.Succeeded)
             {
                 _logger.LogInformation("User logged in with {Name} provider.", info.LoginProvider);
-                return RedirectToLocal(returnUrl);
+                return RedirectToAction("Index", "Perfil");
             }
             if (result.IsLockedOut)
             {
@@ -330,7 +322,7 @@ namespace ControleAtividade.Controllers
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
-                        return RedirectToLocal(returnUrl);
+                        return RedirectToAction("Index", "Perfil");
                     }
                 }
                 AddErrors(result);

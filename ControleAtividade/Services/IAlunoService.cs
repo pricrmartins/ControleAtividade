@@ -12,7 +12,7 @@ namespace ControleAtividade.Services
 
         Task<int> SetAlunoAsync(Aluno aluno);
 
-        Task<Aluno> GetAlunoPorMatriculaAsync(string matricula);
+        Task<Aluno> GetAlunoPorCPFAsync(string CPF);
 
         Task<int> UpdateAlunoAsync(Aluno aluno);
     }

@@ -13,8 +13,8 @@ namespace ControleAtividade.Models.AccountViewModels
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "O campo nome tem limite de 100 caracteres.")]
-        public string Matricula { get; set; }
+        [StringLength(11, ErrorMessage = "O campo deve ter 11 caracteres.", MinimumLength =11)]
+        public string CPF { get; set; }
 
         [Required]
         [EmailAddress]

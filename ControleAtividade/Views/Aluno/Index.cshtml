@@ -1,6 +1,7 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home";
-    Layout = "~/Views/Shared/_LayoutProfessor.cshtml";
+    Layout = "~/Views/Shared/_LayoutAluno.cshtml";
 }
 <div class="col-md-12">
     <br />
@@ -14,7 +15,7 @@
                 <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
                     <div class="form-group">
                         <div class="jumbotron">
-                            <h1>Bem-vindo, Professor!</h1>
+                            <h1>Bem-vindo, Aluno!</h1>
                             <p>...</p>
                             <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
                         </div>
@@ -30,3 +31,5 @@
 @section Scripts {
     @await Html.PartialAsync("_ValidationScriptsPartial")
 }
+
+

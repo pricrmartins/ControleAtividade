@@ -16,11 +16,11 @@ namespace ControleAtividade.Services
         {
             _context = contexto;
         }
-        public async Task<Aluno> GetAlunoPorMatriculaAsync(string matricula)
+        public async Task<Aluno> GetAlunoPorCPFAsync(string CPF)
         {
             var aluno = await _context.Alunos
-                .Where(a => a.ApplicationUser.Matricula.ToUpper().Equals(matricula.ToUpper()))
-                .SingleAsync();
+                .Where(a => a.ApplicationUser.UserName.ToUpper().Equals(CPF.ToUpper()))
+                .SingleOrDefaultAsync();
 
             return aluno;
         }

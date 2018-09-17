@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "Perfis";
+}
+
+<h2>@ViewData["Title"]</h2>
+<br />
+<div class="form-group col-md-12">
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">Perfil professor</div>
+            <div class="panel-body">
+                Selecionando este perfil, você terá funcionalidades de um professor no sistema.
+                <br />
+                <form asp-action="PerfilProfessor" method="get" class="form-group">
+                    <button class="btn btn-danger" type="submit">Selecionar perfil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">Perfil aluno</div>
+            <div class="panel-body">
+                Selecionando este perfil, você terá funcionalidades de um aluno no sistema.
+                <br />
+                <br />
+                <form asp-action="PerfilAluno" method="get" class="form-group">
+                    <button class="btn btn-danger" type="submit">Selecionar perfil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -23,19 +23,19 @@ namespace ControleAtividade.Services
             return professores;
         }
 
-        public async Task<Professor> GetProfessorPorMatriculaAsync(string matricula)
+        public async Task<Professor> GetProfessorPorCPFAsync(string CPF)
         {
             var professor = await _context.Professores
-                .Where(a => a.ApplicationUser.Matricula.ToUpper().Equals(matricula.ToUpper()))
+                .Where(a => a.ApplicationUser.UserName.ToUpper().Equals(CPF.ToUpper()))
                 .Include(p => p.ApplicationUser)
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
             return professor;
         }
 
         public async Task<bool> ProfessorExists(string matricula)
         {
-            return await _context.Professores.AnyAsync(e => e.ApplicationUser.Matricula.ToUpper().Equals(matricula.ToUpper()));
+            return await _context.Professores.AnyAsync(e => e.ApplicationUser.UserName.ToUpper().Equals(matricula.ToUpper()));
         }
 
         public async Task<int> SetProfessorAsync(Professor professor)
