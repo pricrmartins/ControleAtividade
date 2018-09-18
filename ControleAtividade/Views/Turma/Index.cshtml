@@ -1,0 +1,73 @@
+﻿@model ControleAtividade.Models.TurmasViewModels.ListaTurmasViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+    ViewData["Title"] = "Turmas";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h2>@ViewData["Title"]</h2>
+                <hr />
+            </div>
+            <div class=" col-md-offset-4">
+                <div class="col-lg-6">
+                    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="get">
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.Pesquisar, new { htmlAttributes = new { @class = "form-control", placeholder = "Pesquisar turmas..." } })
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        Não encontrou?@Html.ActionLink("Clique aqui para cadastrar", "Cadastrar")
+                    </div>
+                    <br />
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Código")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Nome")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Responsável")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Turmas)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Codigo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Professor.ApplicationUser.Nome)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Detalhes", "Detalhar", new { codigo = item.Codigo }) |
+                                @Html.ActionLink("Editar", "Editar", new { codigo = item.Codigo })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

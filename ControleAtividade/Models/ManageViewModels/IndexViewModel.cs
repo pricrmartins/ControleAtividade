@@ -8,6 +8,7 @@ namespace ControleAtividade.Models.ManageViewModels
 {
     public class IndexViewModel
     {
+        [Display(Name = "CPF")]
         public string Username { get; set; }
 
         public bool IsEmailConfirmed { get; set; }
@@ -17,7 +18,7 @@ namespace ControleAtividade.Models.ManageViewModels
         public string Email { get; set; }
 
         [Phone]
-        [Display(Name = "Phone number")]
+        [Display(Name = "Telefone")]
         public string PhoneNumber { get; set; }
 
         public string StatusMessage { get; set; }

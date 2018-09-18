@@ -1,0 +1,12 @@
+﻿@model ControleAtividade.Models.TurmasViewModels.DetalharTurmaViewModel
+@{
+    ViewData["Title"] = "Detalhes";
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3 text-center">
+        <div><h1>@Html.DisplayFor(model => model.Turma.Codigo) - @Html.DisplayFor(model => model.Turma.Nome)</h1></div>
+        <div class="text-muted"><h4>Responsável @Html.DisplayFor(model => model.Turma.Professor.ApplicationUser.Nome)</h4></div>       
+    </div>
+</div>

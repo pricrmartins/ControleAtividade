@@ -7,20 +7,23 @@ using System.Threading.Tasks;
 
 namespace ControleAtividade.Models
 {
-    [Table("Opcao")]
-    public class Opcao
+    [Table("Questao_Atividade")]
+    public class Questao_Atividade
     {
         [Key]
         [Required]
         public int Id { get; set; }
 
+        [ForeignKey("Atividade_Turma")]
         [Required]
-        public string Descricao { get; set; }
+        public int IdAtividadeTurma { get; set; }
 
         [ForeignKey("Questao")]
         [Required]
         public int IdQuestao { get; set; }
-        
+
         public Questao Questao { get; set; }
+
+        public Atividade_Turma Atividade_Turma { get; set; }
     }
 }

@@ -64,13 +64,28 @@ namespace ControleAtividade
                 options.AccessDeniedPath = "/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromHours(1);
+                options.Cookie.HttpOnly = true;
+            });
+
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
-
-            // registrar o serviço
             services.AddTransient<IProfessorService, ProfessorService>();
             services.AddTransient<IAlunoService, AlunoService>();
-
+            services.AddTransient<ITurmaService, TurmaService>();
+            services.AddTransient<IAtividade_AlunoService, Atividade_AlunoService>();
+            services.AddTransient<IAtividade_TurmaService, Atividade_TurmaService>();
+            services.AddTransient<IAtividadeService, AtividadeService>();
+            services.AddTransient<IOpcaoService, OpcaoService>();
+            services.AddTransient<IOpcao_CorretaService, Opcao_CorretaService>();
+            services.AddTransient<IQuestaoService, QuestaoService>();
+            services.AddTransient<IQuestao_AlunoService, Questao_AlunoService>();
+            services.AddTransient<ITurma_AlunoService, Turma_AlunoService>();
             services.AddMvc();
 
         }
@@ -90,7 +105,7 @@ namespace ControleAtividade
             }
 
             app.UseStaticFiles();
-
+            app.UseSession();
             app.UseAuthentication();
 
             app.UseMvc(routes =>

@@ -10,5 +10,6 @@ namespace ControleAtividade.Models
     public class ApplicationUser : IdentityUser
     {
         public string Nome { get; set; }
+        public int TipoUsuario { get; set; }
     }
 }

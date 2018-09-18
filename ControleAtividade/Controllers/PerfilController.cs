@@ -32,11 +32,14 @@ namespace ControleAtividade.Controllers
         public async Task<IActionResult> PerfilProfessor()
         {
             var usuarioAtual = await _userManager.GetUserAsync(User);
+            usuarioAtual.TipoUsuario = 2;
+            await _userManager.UpdateAsync(usuarioAtual);
             Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
             if (professor == null)
             {
                 await _professorService.SetProfessorAsync(new Professor { IdApplicationUser = usuarioAtual.Id });
             }
+            
             return RedirectToAction("Index","Professor");
 
         }
@@ -44,6 +47,8 @@ namespace ControleAtividade.Controllers
         public async Task<IActionResult> PerfilAluno()
         {
             var usuarioAtual = await _userManager.GetUserAsync(User);
+            usuarioAtual.TipoUsuario = 1;
+            await _userManager.UpdateAsync(usuarioAtual);
             Aluno aluno = await _alunoService.GetAlunoPorCPFAsync(usuarioAtual.UserName);
             if (aluno == null)
             {

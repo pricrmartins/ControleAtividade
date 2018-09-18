@@ -1,0 +1,26 @@
+﻿@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    int tipoUsuario = 0;
+    if (SignInManager.IsSignedIn(User))
+    {
+        var usuarioAtual = await UserManager.GetUserAsync(User);
+        tipoUsuario = usuarioAtual.TipoUsuario;
+
+    }
+    if (tipoUsuario == 0)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else if (tipoUsuario == 1)
+    {
+        Layout = "~/Views/Shared/_LayoutAluno.cshtml";
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_LayoutProfessor.cshtml";
+    }
+
+}
+@RenderBody()

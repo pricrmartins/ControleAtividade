@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace ControleAtividade.Models
 {
-    [Table("Opcao")]
-    public class Opcao
+    [Table("Opcao_Correta")]
+    public class Opcao_Correta
     {
         [Key]
         [Required]
         public int Id { get; set; }
 
         [Required]
-        public string Descricao { get; set; }
+        public bool Correta { get; set; }
 
-        [ForeignKey("Questao")]
+        [ForeignKey("Opcao")]
         [Required]
-        public int IdQuestao { get; set; }
-        
-        public Questao Questao { get; set; }
+        public int IdOpcao { get; set; }
+
+        public Opcao Opcao { get; set; }
     }
 }

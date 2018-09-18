@@ -25,14 +25,10 @@ namespace ControleAtividade.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CodigoTurma");
-
                     b.Property<string>("IdApplicationUser")
                         .IsRequired();
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CodigoTurma");
 
                     b.HasIndex("IdApplicationUser");
 
@@ -73,6 +69,8 @@ namespace ControleAtividade.Migrations
                     b.Property<bool>("PhoneNumberConfirmed");
 
                     b.Property<string>("SecurityStamp");
+
+                    b.Property<int>("TipoUsuario");
 
                     b.Property<bool>("TwoFactorEnabled");
 
@@ -130,6 +128,25 @@ namespace ControleAtividade.Migrations
                     b.ToTable("Atividade_Aluno");
                 });
 
+            modelBuilder.Entity("ControleAtividade.Models.Atividade_Turma", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CodigoTurma")
+                        .IsRequired();
+
+                    b.Property<bool>("Disponivel");
+
+                    b.Property<int>("IdAtividade");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CodigoTurma");
+
+                    b.ToTable("Atividade_Turma");
+                });
+
             modelBuilder.Entity("ControleAtividade.Models.Imagem", b =>
                 {
                     b.Property<int>("Id")
@@ -154,8 +171,6 @@ namespace ControleAtividade.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<bool>("Correta");
-
                     b.Property<string>("Descricao")
                         .IsRequired();
 
@@ -166,6 +181,22 @@ namespace ControleAtividade.Migrations
                     b.HasIndex("IdQuestao");
 
                     b.ToTable("Opcao");
+                });
+
+            modelBuilder.Entity("ControleAtividade.Models.Opcao_Correta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Correta");
+
+                    b.Property<int>("IdOpcao");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdOpcao");
+
+                    b.ToTable("Opcao_Correta");
                 });
 
             modelBuilder.Entity("ControleAtividade.Models.Professor", b =>
@@ -241,6 +272,21 @@ namespace ControleAtividade.Migrations
                     b.HasIndex("IdProfessor");
 
                     b.ToTable("Turma");
+                });
+
+            modelBuilder.Entity("ControleAtividade.Models.Turma_Aluno", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CodigoTuma")
+                        .IsRequired();
+
+                    b.Property<int>("IdAluno");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Turma_Aluno");
                 });
 
             modelBuilder.Entity("ControleAtividade.Models.Usuario", b =>
@@ -371,10 +417,6 @@ namespace ControleAtividade.Migrations
 
             modelBuilder.Entity("ControleAtividade.Models.Aluno", b =>
                 {
-                    b.HasOne("ControleAtividade.Models.Turma", "Turma")
-                        .WithMany()
-                        .HasForeignKey("CodigoTurma");
-
                     b.HasOne("ControleAtividade.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("IdApplicationUser")
@@ -389,11 +431,27 @@ namespace ControleAtividade.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("ControleAtividade.Models.Atividade_Turma", b =>
+                {
+                    b.HasOne("ControleAtividade.Models.Turma", "Turma")
+                        .WithMany()
+                        .HasForeignKey("CodigoTurma")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("ControleAtividade.Models.Opcao", b =>
                 {
                     b.HasOne("ControleAtividade.Models.Questao", "Questao")
                         .WithMany("ListaOpcao")
                         .HasForeignKey("IdQuestao")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ControleAtividade.Models.Opcao_Correta", b =>
+                {
+                    b.HasOne("ControleAtividade.Models.Opcao", "Opcao")
+                        .WithMany()
+                        .HasForeignKey("IdOpcao")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
