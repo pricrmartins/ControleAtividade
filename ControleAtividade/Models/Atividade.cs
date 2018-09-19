@@ -23,12 +23,6 @@ namespace ControleAtividade.Models
         [Required]
         public string Tipo { get; set; }
 
-        [ForeignKey("Turma")]
-        [Required]
-        public string CodigoTurma { get; set; }
-
-        public Turma Turma { get; set; }
-
         public virtual List<Questao> ListaQuestao { get; set; }
     }
 }

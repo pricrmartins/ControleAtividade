@@ -1,4 +1,5 @@
 ﻿using ControleAtividade.Services;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,6 @@ namespace ControleAtividade.Models
         private readonly IAtividade_TurmaService _atividade_TurmaService;
         private readonly ITurmaService _turmaService;
         private readonly IQuestaoService _questaoService;
-        private readonly IQuestao_AtividadeService _questaoAtividadeService;
         private readonly IOpcaoService _opcaoService;
         private readonly IOpcao_CorretaService _opcao_CorretaService;
 
@@ -22,7 +22,6 @@ namespace ControleAtividade.Models
             IAtividade_TurmaService atividade_TurmaService,
             ITurmaService turmaService,
             IQuestaoService questaoService,
-            IQuestao_AtividadeService questaoAtividadeService,
             IOpcaoService opcaoService, IOpcao_CorretaService opcao_CorretaService)
         {
             _professorService = professorService;
@@ -30,12 +29,11 @@ namespace ControleAtividade.Models
             _atividade_TurmaService = atividade_TurmaService;
             _turmaService = turmaService;
             _questaoService = questaoService;
-            _questaoAtividadeService = questaoAtividadeService;
             _opcaoService = opcaoService;
             _opcao_CorretaService = opcao_CorretaService;
             ProfessorTeste professor = new ProfessorTeste(_professorService,
             _atividadeService, _atividade_TurmaService, _turmaService, _questaoService,
-            _questaoAtividadeService, _opcaoService, _opcao_CorretaService);
+            _opcaoService, _opcao_CorretaService);
         }
 
 
@@ -48,7 +46,6 @@ namespace ControleAtividade.Models
         private readonly IAtividade_TurmaService _atividade_TurmaService;
         private readonly ITurmaService _turmaService;
         private readonly IQuestaoService _questaoService;
-        private readonly IQuestao_AtividadeService _questaoAtividadeService;
         private readonly IOpcaoService _opcaoService;
         private readonly IOpcao_CorretaService _opcao_CorretaService;
 
@@ -57,30 +54,20 @@ namespace ControleAtividade.Models
             IAtividade_TurmaService atividade_TurmaService,
             ITurmaService turmaService,
             IQuestaoService questaoService,
-            IQuestao_AtividadeService questaoAtividadeService,
             IOpcaoService opcaoService, IOpcao_CorretaService opcao_CorretaService)
         {
-            _professorService = professorService;
-            _atividadeService = atividadeService;
-            _atividade_TurmaService = atividade_TurmaService;
-            _turmaService = turmaService;
-            _questaoService = questaoService;
-            _questaoAtividadeService = questaoAtividadeService;
-            _opcaoService = opcaoService;
-            _opcao_CorretaService = opcao_CorretaService;
 
             TestaProfessor();
         }
 
         public async void SalvarAtividade(Atividade atividade,
-            List<Questao> questoes, List<Questao_Atividade> questao_Atividades,
+            List<Questao> questoes,
             Atividade_Turma atividade_Turma, List<Opcao> opcoes, List<Opcao_Correta> opcoes_Correta)
         {
             await _atividadeService.SetAtividadeAsync(atividade);
-            Console.WriteLine("Adicionado Atividade:{0}, para a turma {1}\n com a descrição: {2}.", atividade.Nome, atividade.Turma.Nome, atividade.Descricao);
+            Console.WriteLine("Adicionado Atividade:{0} com a descrição: {2}.", atividade.Nome, atividade.Descricao);
 
             questoes.ForEach(SalvarQuestao);
-            questao_Atividades.ForEach(SalvarQuestao_Atividade);
             opcoes.ForEach(SalvarOpcao);
             opcoes_Correta.ForEach(SalvarOpcao_Correta);
         }
@@ -89,12 +76,6 @@ namespace ControleAtividade.Models
         {
             await _questaoService.SetQuestaoAsync(questao);
             Console.WriteLine("Questão salva Cabeçalho: {0} e texto: {1}", questao.Cabecalho, questao.Texto);
-        }
-
-        public async void SalvarQuestao_Atividade(Questao_Atividade questao_Atividade)
-        {
-            await _questaoAtividadeService.SetQuestao_AtividadeAsync(questao_Atividade);
-            Console.WriteLine("Adicionado Questão: {0}, com atividade{1}", questao_Atividade.Questao.Cabecalho, questao_Atividade.Atividade_Turma.Atividade.Nome);
         }
 
         public async void SalvarOpcao(Opcao opcao)
@@ -123,19 +104,35 @@ namespace ControleAtividade.Models
 
         public void TestaProfessor()
         {
-            /// cadastra professor
-
-            Professor professor = new Professor { IdApplicationUser = "c620b621-cf24-4076-9320-ab8aa805dfc7" };
+            // cadastra professor
+            Professor professor = new Professor
+            {
+                ApplicationUser = new ApplicationUser
+                {
+                    Email = "pricrmartins@gmail.com",
+                    Nome = "Priscilla",
+                    UserName = "12312312312",
+                    PasswordHash = "123123"
+                }
+            };
             SalvarProfessor(professor);
 
+            TestaTurma(professor);
+        }
+
+        public void TestaTurma(Professor professor)
+        {
             // cadastra Turma
             Turma turma = new Turma { Codigo = "A-123", Nome = "Turma SA", IdProfessor = professor.Id };
             SalvaTurma(turma);
+            TestaAtividade(turma);
+        }
 
-            // cadastra Atividade da turma
+        public void TestaAtividade(Turma turma)
+        {
+            // cadastra Atividade na turma
             Atividade atividade = new Atividade
             {
-                CodigoTurma = "A-123",
                 Nome = "Adição simples",
                 Descricao = "Atividade para testar conhecimentos básicos de matemática",
                 Tipo = "Matemática"
@@ -154,11 +151,7 @@ namespace ControleAtividade.Models
                     Atividade = atividade
                 }
             };
-            
-            List<Questao_Atividade> questao_Atividades = new List<Questao_Atividade>
-            {
-                new Questao_Atividade{ Atividade_Turma = atividade_Turma, Questao = listaQuestao[0] }
-            };
+
             List<Opcao> listaOpcao = new List<Opcao>
             {
                 new Opcao{ Questao = listaQuestao[0] ,Descricao = "sobraram 2 maçãs."},
@@ -169,8 +162,75 @@ namespace ControleAtividade.Models
             {
                 new Opcao_Correta{ Correta = true, Opcao = listaOpcao[0] }
             };
-            SalvarAtividade(atividade, listaQuestao, questao_Atividades, atividade_Turma, listaOpcao, listaOpcaoCorreta);
+            SalvarAtividade(atividade, listaQuestao, atividade_Turma, listaOpcao, listaOpcaoCorreta);
+        }
+    }
 
+    public class AlunoTeste
+    {
+        private readonly IAlunoService _alunoService;
+        private readonly ITurmaService _turmaService;
+        private readonly IAtividade_TurmaService _atividade_TurmaService;
+        private readonly IResposta_AtividadeService _resposta_AtividadeService;
+
+        public AlunoTeste(IAlunoService alunoService, ITurmaService turmaService,
+            IAtividadeService atividadeService, IAtividade_TurmaService atividade_TurmaService,
+            IResposta_AtividadeService resposta_AtividadeService)
+        {
+            _alunoService = alunoService;
+            _turmaService = turmaService;
+            _atividade_TurmaService = atividade_TurmaService;
+            _resposta_AtividadeService = resposta_AtividadeService;
+        }
+
+        public async void SalvarAluno(Aluno aluno)
+        {
+            await _alunoService.SetAlunoAsync(aluno);
+            Console.WriteLine("Adicionado aluno: {0}", aluno.ApplicationUser.Nome);
+        }
+
+        public async void BuscarTurma(Turma turma)
+        {
+            await _turmaService.GetTurmaPorCodigo(turma.Codigo);
+            Console.WriteLine($"Selecionado turma: {turma.Nome}");
+        }
+
+        public async void BuscarAtividadePendente(Turma turma, Aluno aluno)
+        {
+            IEnumerable<Atividade_Turma> atividades = await _atividade_TurmaService.GetAtividadesTurmaCodigoAsync(turma.Codigo);
+            IEnumerable<Resposta_Atividade> atividadesRespondidas = await BuscarAtividadesRespondidas(aluno);
+
+            List<Atividade_Turma> listaAtividades = atividades.ToList();
+            List<Resposta_Atividade> listaAtividadesRespondidas = atividadesRespondidas.ToList();
+
+            foreach (Resposta_Atividade itemAtividadesRespondidas in listaAtividadesRespondidas)
+            {
+                foreach (Atividade_Turma itemAtividades in listaAtividades)
+                {
+                    if (itemAtividadesRespondidas.Atividade_Turma.IdAtividade == itemAtividades.IdAtividade)
+                    {
+                        listaAtividades.Remove(itemAtividades);
+                    }
+                }
+            }
+            listaAtividades.ForEach(Print);
+        }
+
+        public void ResponderQuestaoAtividade()
+        {
+
+        }
+
+        public async Task<IEnumerable<Resposta_Atividade>> BuscarAtividadesRespondidas(Aluno aluno)
+        {
+            var resultado = await _resposta_AtividadeService.GetRespostaAtividadePorAlunoAsync(aluno.Id);
+
+            return resultado;
+        }
+
+        public void Print(Atividade_Turma atividade_Turma)
+        {
+            Console.WriteLine($"Atividades pendentes: {atividade_Turma.Atividade.Nome}");
         }
     }
 }

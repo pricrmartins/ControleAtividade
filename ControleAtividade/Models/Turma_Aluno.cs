@@ -22,8 +22,8 @@ namespace ControleAtividade.Models
         [Required]
         public int IdAluno { get; set; }
 
-        [NotMapped]
         public Turma Turma { get; set; }
+
         [NotMapped]
         public Aluno Aluno { get; set; }
     }

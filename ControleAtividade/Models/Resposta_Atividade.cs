@@ -7,26 +7,26 @@ using System.Threading.Tasks;
 
 namespace ControleAtividade.Models
 {
-    [Table("Atividade_Aluno")]
-    public class Atividade_Aluno
+    [Table("Resposta_Atividade")]
+    public class Resposta_Atividade
     {
         [Key]
         [Required]
         public int Id { get; set; }
 
-        [ForeignKey("Atividade")]
+        [ForeignKey("Atividade_Turma")]
         [Required]
-        public int IdAtividade { get; set; }
+        public int IdAtividade_Turma { get; set; }
 
         [ForeignKey("Aluno")]
         [Required]
         public int IdAluno { get; set; }
 
         [NotMapped]
-        public Atividade Atividade { get; set; }
-        [NotMapped]
+        public Atividade_Turma Atividade_Turma { get; set; }
+
         public Aluno Aluno { get; set; }
 
-        public virtual List<Questao_Aluno> ListaQuestaoAluno { get; set; }
+        public virtual List<Resposta_Opcao> ListaRespostaOpcao { get; set; }
     }
 }

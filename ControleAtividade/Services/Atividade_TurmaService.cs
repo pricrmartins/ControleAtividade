@@ -17,6 +17,14 @@ namespace ControleAtividade.Services
             _context = contexto;
         }
 
+        public async Task<IEnumerable<Atividade_Turma>> GetAtividadesTurmaCodigoAsync(string codigo)
+        {
+            var atividades_Turma = await _context.Atividades_Turma
+                .Where(t => t.Turma.Codigo.ToUpper().Equals(codigo.ToUpper())).ToArrayAsync();
+
+            return atividades_Turma;
+        }
+
         public async Task<IEnumerable<Atividade_Turma>> GetAtividades_TurmaAsync()
         {
             var atividades_Turma = await _context.Atividades_Turma.ToArrayAsync();

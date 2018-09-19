@@ -95,9 +95,6 @@ namespace ControleAtividade.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CodigoTurma")
-                        .IsRequired();
-
                     b.Property<string>("Descricao")
                         .IsRequired();
 
@@ -109,23 +106,7 @@ namespace ControleAtividade.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CodigoTurma");
-
                     b.ToTable("Atividade");
-                });
-
-            modelBuilder.Entity("ControleAtividade.Models.Atividade_Aluno", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("IdAluno");
-
-                    b.Property<int>("IdAtividade");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Atividade_Aluno");
                 });
 
             modelBuilder.Entity("ControleAtividade.Models.Atividade_Turma", b =>
@@ -143,6 +124,8 @@ namespace ControleAtividade.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CodigoTurma");
+
+                    b.HasIndex("IdAtividade");
 
                     b.ToTable("Atividade_Turma");
                 });
@@ -226,7 +209,10 @@ namespace ControleAtividade.Migrations
 
                     b.Property<int>("IdImagem");
 
-                    b.Property<string>("Texto");
+                    b.Property<int>("Numero");
+
+                    b.Property<string>("Texto")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -237,24 +223,36 @@ namespace ControleAtividade.Migrations
                     b.ToTable("Questao");
                 });
 
-            modelBuilder.Entity("ControleAtividade.Models.Questao_Aluno", b =>
+            modelBuilder.Entity("ControleAtividade.Models.Resposta_Atividade", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("Atividade_AlunoId");
+                    b.Property<int>("IdAluno");
 
-                    b.Property<int>("IdAtividade_Aluno");
-
-                    b.Property<int>("IdOpcao");
-
-                    b.Property<int>("IdQuestao");
+                    b.Property<int>("IdAtividade_Turma");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Atividade_AlunoId");
+                    b.HasIndex("IdAluno");
 
-                    b.ToTable("Questao_Aluno");
+                    b.ToTable("Resposta_Atividade");
+                });
+
+            modelBuilder.Entity("ControleAtividade.Models.Resposta_Opcao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("IdOpcao");
+
+                    b.Property<int>("IdResposta_Atividade");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdResposta_Atividade");
+
+                    b.ToTable("Resposta_Opcao");
                 });
 
             modelBuilder.Entity("ControleAtividade.Models.Turma", b =>
@@ -285,6 +283,8 @@ namespace ControleAtividade.Migrations
                     b.Property<int>("IdAluno");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CodigoTuma");
 
                     b.ToTable("Turma_Aluno");
                 });
@@ -423,19 +423,16 @@ namespace ControleAtividade.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ControleAtividade.Models.Atividade", b =>
-                {
-                    b.HasOne("ControleAtividade.Models.Turma", "Turma")
-                        .WithMany()
-                        .HasForeignKey("CodigoTurma")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
             modelBuilder.Entity("ControleAtividade.Models.Atividade_Turma", b =>
                 {
                     b.HasOne("ControleAtividade.Models.Turma", "Turma")
                         .WithMany()
                         .HasForeignKey("CodigoTurma")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ControleAtividade.Models.Atividade", "Atividade")
+                        .WithMany()
+                        .HasForeignKey("IdAtividade")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -476,11 +473,20 @@ namespace ControleAtividade.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("ControleAtividade.Models.Questao_Aluno", b =>
+            modelBuilder.Entity("ControleAtividade.Models.Resposta_Atividade", b =>
                 {
-                    b.HasOne("ControleAtividade.Models.Atividade_Aluno")
-                        .WithMany("ListaQuestaoAluno")
-                        .HasForeignKey("Atividade_AlunoId");
+                    b.HasOne("ControleAtividade.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("IdAluno")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ControleAtividade.Models.Resposta_Opcao", b =>
+                {
+                    b.HasOne("ControleAtividade.Models.Resposta_Atividade", "Resposta_Atividade")
+                        .WithMany("ListaRespostaOpcao")
+                        .HasForeignKey("IdResposta_Atividade")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("ControleAtividade.Models.Turma", b =>
@@ -488,6 +494,14 @@ namespace ControleAtividade.Migrations
                     b.HasOne("ControleAtividade.Models.Professor", "Professor")
                         .WithMany("ListaTurma")
                         .HasForeignKey("IdProfessor")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("ControleAtividade.Models.Turma_Aluno", b =>
+                {
+                    b.HasOne("ControleAtividade.Models.Turma", "Turma")
+                        .WithMany()
+                        .HasForeignKey("CodigoTuma")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

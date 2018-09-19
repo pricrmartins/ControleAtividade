@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ControleAtividade.Migrations
 {
-    public partial class AdicionarTabelas : Migration
+    public partial class _001 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -51,17 +51,18 @@ namespace ControleAtividade.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Atividade_Aluno",
+                name: "Atividade",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    IdAluno = table.Column<int>(nullable: false),
-                    IdAtividade = table.Column<int>(nullable: false)
+                    Descricao = table.Column<string>(nullable: false),
+                    Nome = table.Column<string>(nullable: false),
+                    Tipo = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Atividade_Aluno", x => x.Id);
+                    table.PrimaryKey("PK_Atividade", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -77,20 +78,6 @@ namespace ControleAtividade.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Imagem", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Turma_Aluno",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CodigoTuma = table.Column<string>(nullable: false),
-                    IdAluno = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Turma_Aluno", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -257,25 +244,52 @@ namespace ControleAtividade.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Questao_Aluno",
+                name: "Questao",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Atividade_AlunoId = table.Column<int>(nullable: true),
-                    IdAtividade_Aluno = table.Column<int>(nullable: false),
-                    IdOpcao = table.Column<int>(nullable: false),
-                    IdQuestao = table.Column<int>(nullable: false)
+                    Cabecalho = table.Column<string>(nullable: false),
+                    IdAtividade = table.Column<int>(nullable: false),
+                    IdImagem = table.Column<int>(nullable: false),
+                    Numero = table.Column<int>(nullable: false),
+                    Texto = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Questao_Aluno", x => x.Id);
+                    table.PrimaryKey("PK_Questao", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Questao_Aluno_Atividade_Aluno_Atividade_AlunoId",
-                        column: x => x.Atividade_AlunoId,
-                        principalTable: "Atividade_Aluno",
+                        name: "FK_Questao_Atividade_IdAtividade",
+                        column: x => x.IdAtividade,
+                        principalTable: "Atividade",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Questao_Imagem_IdImagem",
+                        column: x => x.IdImagem,
+                        principalTable: "Imagem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Resposta_Atividade",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdAluno = table.Column<int>(nullable: false),
+                    IdAtividade_Turma = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Resposta_Atividade", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Resposta_Atividade_Aluno_IdAluno",
+                        column: x => x.IdAluno,
+                        principalTable: "Aluno",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -298,24 +312,42 @@ namespace ControleAtividade.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Atividade",
+                name: "Opcao",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CodigoTurma = table.Column<string>(nullable: false),
                     Descricao = table.Column<string>(nullable: false),
-                    Nome = table.Column<string>(nullable: false),
-                    Tipo = table.Column<string>(nullable: false)
+                    IdQuestao = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Atividade", x => x.Id);
+                    table.PrimaryKey("PK_Opcao", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Atividade_Turma_CodigoTurma",
-                        column: x => x.CodigoTurma,
-                        principalTable: "Turma",
-                        principalColumn: "Codigo",
+                        name: "FK_Opcao_Questao_IdQuestao",
+                        column: x => x.IdQuestao,
+                        principalTable: "Questao",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Resposta_Opcao",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    IdOpcao = table.Column<int>(nullable: false),
+                    IdResposta_Atividade = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Resposta_Opcao", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Resposta_Opcao_Resposta_Atividade_IdResposta_Atividade",
+                        column: x => x.IdResposta_Atividade,
+                        principalTable: "Resposta_Atividade",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -338,53 +370,31 @@ namespace ControleAtividade.Migrations
                         principalTable: "Turma",
                         principalColumn: "Codigo",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Questao",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Cabecalho = table.Column<string>(nullable: false),
-                    IdAtividade = table.Column<int>(nullable: false),
-                    IdImagem = table.Column<int>(nullable: false),
-                    Texto = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Questao", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Questao_Atividade_IdAtividade",
+                        name: "FK_Atividade_Turma_Atividade_IdAtividade",
                         column: x => x.IdAtividade,
                         principalTable: "Atividade",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Questao_Imagem_IdImagem",
-                        column: x => x.IdImagem,
-                        principalTable: "Imagem",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Opcao",
+                name: "Turma_Aluno",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Descricao = table.Column<string>(nullable: false),
-                    IdQuestao = table.Column<int>(nullable: false)
+                    CodigoTuma = table.Column<string>(nullable: false),
+                    IdAluno = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Opcao", x => x.Id);
+                    table.PrimaryKey("PK_Turma_Aluno", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Opcao_Questao_IdQuestao",
-                        column: x => x.IdQuestao,
-                        principalTable: "Questao",
-                        principalColumn: "Id",
+                        name: "FK_Turma_Aluno_Turma_CodigoTuma",
+                        column: x => x.CodigoTuma,
+                        principalTable: "Turma",
+                        principalColumn: "Codigo",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -453,14 +463,14 @@ namespace ControleAtividade.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Atividade_CodigoTurma",
-                table: "Atividade",
-                column: "CodigoTurma");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Atividade_Turma_CodigoTurma",
                 table: "Atividade_Turma",
                 column: "CodigoTurma");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Atividade_Turma_IdAtividade",
+                table: "Atividade_Turma",
+                column: "IdAtividade");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Opcao_IdQuestao",
@@ -488,14 +498,24 @@ namespace ControleAtividade.Migrations
                 column: "IdImagem");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questao_Aluno_Atividade_AlunoId",
-                table: "Questao_Aluno",
-                column: "Atividade_AlunoId");
+                name: "IX_Resposta_Atividade_IdAluno",
+                table: "Resposta_Atividade",
+                column: "IdAluno");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Resposta_Opcao_IdResposta_Atividade",
+                table: "Resposta_Opcao",
+                column: "IdResposta_Atividade");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Turma_IdProfessor",
                 table: "Turma",
                 column: "IdProfessor");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Turma_Aluno_CodigoTuma",
+                table: "Turma_Aluno",
+                column: "CodigoTuma");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuario_UsuarioAplicacao",
@@ -505,9 +525,6 @@ namespace ControleAtividade.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Aluno");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -530,7 +547,7 @@ namespace ControleAtividade.Migrations
                 name: "Opcao_Correta");
 
             migrationBuilder.DropTable(
-                name: "Questao_Aluno");
+                name: "Resposta_Opcao");
 
             migrationBuilder.DropTable(
                 name: "Turma_Aluno");
@@ -545,22 +562,25 @@ namespace ControleAtividade.Migrations
                 name: "Opcao");
 
             migrationBuilder.DropTable(
-                name: "Atividade_Aluno");
+                name: "Resposta_Atividade");
+
+            migrationBuilder.DropTable(
+                name: "Turma");
 
             migrationBuilder.DropTable(
                 name: "Questao");
+
+            migrationBuilder.DropTable(
+                name: "Aluno");
+
+            migrationBuilder.DropTable(
+                name: "Professor");
 
             migrationBuilder.DropTable(
                 name: "Atividade");
 
             migrationBuilder.DropTable(
                 name: "Imagem");
-
-            migrationBuilder.DropTable(
-                name: "Turma");
-
-            migrationBuilder.DropTable(
-                name: "Professor");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

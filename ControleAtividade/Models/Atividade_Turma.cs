@@ -24,7 +24,6 @@ namespace ControleAtividade.Models
         [Required]
         public string CodigoTurma { get; set; }
 
-        [NotMapped]
         public Atividade Atividade { get; set; }
 
         public Turma Turma { get; set; }

@@ -19,12 +19,11 @@ namespace ControleAtividade.Data
         public virtual DbSet<Atividade> Atividades { get; set; }
         public virtual DbSet<Questao> Questoes { get; set; }
         public virtual DbSet<Opcao> Opcoes { get; set; }
-        public virtual DbSet<Atividade_Aluno> Atividades_Aluno { get; set; }
-        public virtual DbSet<Questao_Aluno> Questoes_Aluno { get; set; }
         public virtual DbSet<Atividade_Turma> Atividades_Turma { get; set; }
         public virtual DbSet<Opcao_Correta> Opcoes_Correta { get; set; }
         public virtual DbSet<Turma_Aluno> Turmas_Aluno { get; set; }
-        public virtual DbSet<Questao_Atividade> Questoes_Atividade { get; set; }
+        public virtual DbSet<Resposta_Atividade> Resposta_Atividades { get; set; }
+        public virtual DbSet<Resposta_Opcao> Resposta_Opcoes { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

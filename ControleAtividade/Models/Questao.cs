@@ -14,7 +14,10 @@ namespace ControleAtividade.Models
         [Required]
         public string Cabecalho { get; set; }
 
+        [Required]
         public string Texto { get; set; }
+
+        public int Numero { get; set; }
 
         [ForeignKey("Imagem")]
         public int IdImagem { get; set; }
