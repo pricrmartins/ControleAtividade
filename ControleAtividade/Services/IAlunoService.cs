@@ -15,5 +15,7 @@ namespace ControleAtividade.Services
         Task<Aluno> GetAlunoPorCPFAsync(string CPF);
 
         Task<int> UpdateAlunoAsync(Aluno aluno);
+
+        Task<Aluno> GetAlunoPorIdUsuario(string Id);
     }
 }

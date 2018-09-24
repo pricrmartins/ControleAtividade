@@ -17,5 +17,7 @@ namespace ControleAtividade.Services
         Task<int> UpdateProfessorAsync(Professor professor);
 
         Task<bool> ProfessorExists(string matricula);
+
+        Task<Professor> GetProfessorPorIdUsuario(string IdUsuario);
     }
 }

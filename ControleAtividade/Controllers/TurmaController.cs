@@ -45,15 +45,7 @@ namespace ControleAtividade.Controllers
                     Turmas = turmas
                 });
             }
-            turmas = await _turmaService.GetTurmasAsync();
-            if (!string.IsNullOrWhiteSpace(Pesquisar))
-            {
-                turmas = turmas.Where(t => t.Codigo.ToUpper().Contains(Pesquisar.ToUpper()) || t.Nome.ToUpper().Contains(Pesquisar.ToUpper()));
-            }
-            return View(new ListaTurmasViewModel
-            {
-                Turmas = turmas
-            });
+            return RedirectToAction("Index","Turmas");
         }
 
         [HttpGet]

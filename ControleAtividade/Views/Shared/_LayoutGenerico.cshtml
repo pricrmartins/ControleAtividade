@@ -9,9 +9,9 @@
         tipoUsuario = usuarioAtual.TipoUsuario;
 
     }
-    if (tipoUsuario == 0)
+    if (tipoUsuario == 2)
     {
-        Layout = "~/Views/Shared/_Layout.cshtml";
+        Layout = "~/Views/Shared/_LayoutProfessor.cshtml";
     }
     else if (tipoUsuario == 1)
     {
@@ -19,7 +19,7 @@
     }
     else
     {
-        Layout = "~/Views/Shared/_LayoutProfessor.cshtml";
+        Layout = "~/Views/Shared/_Layout.cshtml";
     }
 
 }

@@ -13,6 +13,11 @@ namespace ControleAtividade.Services
         Task<int> SetTurma_AlunoAsync(Turma_Aluno turma_Aluno);
 
         Task<int> UpdateTurma_AlunoAsync(Turma_Aluno turma_Aluno);
-        
+
+        Task<IEnumerable<Turma_Aluno>> GetTurmasPorAlunoAsync(Aluno aluno);
+
+        Task<IEnumerable<Turma_Aluno>> GetTurmasDiferenteAlunoAsync(int IdAluno);
+
+        Task<bool> ExisteAlunoVinculadoNaTurma(int IdAluno, string CodigoTurma);
     }
 }

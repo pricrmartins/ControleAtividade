@@ -17,9 +17,39 @@ namespace ControleAtividade.Services
             _context = contexto;
         }
 
+        public async Task<bool> ExisteAlunoVinculadoNaTurma(int IdAluno, string CodigoTurma)
+        {
+            var turma_Aluno = await _context.Turmas_Aluno
+                .Where(turma => turma.IdAluno == IdAluno && turma.CodigoTuma.Equals(CodigoTurma)).FirstOrDefaultAsync();
+
+            return turma_Aluno != null ? true : false;
+        }
+
+        public async Task<IEnumerable<Turma_Aluno>> GetTurmasDiferenteAlunoAsync(int IdAluno)
+        {
+            var turmas_Aluno = await _context.Turmas_Aluno
+                .Where(turma => turma.IdAluno != IdAluno)
+                .Include(turma => turma.Turma)
+                .ToArrayAsync();
+
+            return turmas_Aluno;
+        }
+
+        public async Task<IEnumerable<Turma_Aluno>> GetTurmasPorAlunoAsync(Aluno aluno)
+        {
+            var turmas_Aluno = await _context.Turmas_Aluno
+                .Where(turma => turma.IdAluno == aluno.Id)
+                .Include(turma => turma.Turma)
+                .ToArrayAsync();
+
+            return turmas_Aluno;
+        }
+
         public async Task<IEnumerable<Turma_Aluno>> GetTurmas_AlunoAsync()
         {
             var turmas_Aluno = await _context.Turmas_Aluno
+                .Include(turma => turma.Aluno)
+                .Include(turma => turma.Turma)
                 .ToArrayAsync();
 
             return turmas_Aluno;

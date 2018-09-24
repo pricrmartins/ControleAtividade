@@ -10,6 +10,12 @@ namespace ControleAtividade.Models
     [Table("Turma_Aluno")]
     public class Turma_Aluno
     {
+        public enum StatusTurma
+        {
+            Pendente,
+            Invalidado,
+            Validado
+        }
         [Key]
         [Required]
         public int Id { get; set; }
@@ -21,6 +27,9 @@ namespace ControleAtividade.Models
         [ForeignKey("Aluno")]
         [Required]
         public int IdAluno { get; set; }
+
+        [Required]
+        public StatusTurma Status { get; set; }
 
         public Turma Turma { get; set; }
 

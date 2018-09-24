@@ -33,6 +33,16 @@ namespace ControleAtividade.Services
             return professor;
         }
 
+        public async Task<Professor> GetProfessorPorIdUsuario(string IdUsuario)
+        {
+            var professor = await _context.Professores
+                .Where(a => a.ApplicationUser.Id.Equals(IdUsuario))
+                .Include(p => p.ApplicationUser)
+                .SingleOrDefaultAsync();
+
+            return professor;
+        }
+
         public async Task<bool> ProfessorExists(string matricula)
         {
             return await _context.Professores.AnyAsync(e => e.ApplicationUser.UserName.ToUpper().Equals(matricula.ToUpper()));
