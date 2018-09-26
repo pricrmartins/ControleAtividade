@@ -16,9 +16,20 @@ namespace ControleAtividade.Services
         {
             _context = contexto;
         }
+
+        public async Task<Atividade> GetAtividade(int Id)
+        {
+           return await _context.Atividades
+                .Where(atividade => atividade.Id == Id)
+                .Include(atividade => atividade.ListaQuestao)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<Atividade>> GetAtividadesAsync()
         {
-            var atividades = await _context.Atividades.ToArrayAsync();
+            var atividades = await _context
+                .Atividades.Include(atividade => atividade.ListaQuestao)
+                .ToArrayAsync();
 
             return atividades;
         }

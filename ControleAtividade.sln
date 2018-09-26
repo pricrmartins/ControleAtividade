@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleAtividade", "ControleAtividade\ControleAtividade.csproj", "{74220E3A-9D02-4491-BD20-9D5F7F082B61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleAtividadeTeste", "ControleAtividadeTeste\ControleAtividadeTeste.csproj", "{06E0DEAC-05BD-4652-BD82-F54D6A286C58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleAtividadeTeste", "ControleAtividadeTeste\ControleAtividadeTeste.csproj", "{06E0DEAC-05BD-4652-BD82-F54D6A286C58}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

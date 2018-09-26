@@ -1,0 +1,69 @@
+﻿@model ControleAtividade.Models.AtividadesViewModels.EditarQuestaoViewModel
+@{
+    ViewData["Title"] = "Editar questão";
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+}
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-12">
+            <div class="text-center"><h2>@ViewData["Title"]</h2></div>
+        </div>
+
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            @Html.HiddenFor(model => model.IdQuestao)
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Cabecalho"></label>
+                <input asp-for="Cabecalho" class="form-control" />
+                <span asp-validation-for="Cabecalho" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Texto"></label>
+                <textarea asp-for="Texto" class="form-control"></textarea>
+                <span asp-validation-for="Texto" class="text-danger"></span>
+            </div>
+            <div class="">
+                <strong>Opções</strong>
+                <table class="table">
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <td>Descrição</td>
+                        @Html.HiddenFor(model => model.Opcoes[0].Id)
+                        <td><input asp-for="Opcoes[0].Descricao" class="form-control" /></td>
+
+                        <td><input asp-for="Selecionado" name="Selecionado" value="0" type="radio" /> Correta</td>
+                    </tr>
+                    <tr>
+                        <td>Descrição</td>
+                        @Html.HiddenFor(model => model.Opcoes[1].Id)
+                        <td><input asp-for="Opcoes[1].Descricao" class="form-control" /></td>
+
+                        <td><input asp-for="Selecionado" name="Selecionado" value="1" type="radio" /> Correta</td>
+                    </tr>
+                    <tr>
+                        <td>Descrição</td>
+                        @Html.HiddenFor(model => model.Opcoes[2].Id)
+                        <td><input asp-for="Opcoes[2].Descricao" class="form-control" /></td>
+
+                        <td><input asp-for="Selecionado" name="Selecionado" value="2" type="radio" /> Correta</td>
+                    </tr>
+                    <tr>
+                        <td>Descrição</td>
+                        @Html.HiddenFor(model => model.Opcoes[3].Id)
+                        <td><input asp-for="Opcoes[3].Descricao" class="form-control" /></td>
+
+                        <td><input asp-for="Selecionado" name="Selecionado" value="3" type="radio" /> Correta</td>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="text-center">
+                <input type="submit" id="enviarAuto" class="btn btn-primary" value="Editar Questão" />
+            </div>
+        </form>
+    </div>
+</div>

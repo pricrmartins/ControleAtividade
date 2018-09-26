@@ -13,5 +13,9 @@ namespace ControleAtividade.Services
         Task<int> SetQuestaoAsync(Questao questao);
 
         Task<int> UpdateQuestaoAsync(Questao questao);
+
+        Task<IEnumerable<Questao>> GetQuestoesPorAtividadeAsync(int IdAtividade);
+
+        Task<Questao> GetQuestaoPorId(int IdQuestao);
     }
 }

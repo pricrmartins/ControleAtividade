@@ -22,5 +22,7 @@ namespace ControleAtividade.Models
         public int IdQuestao { get; set; }
         
         public Questao Questao { get; set; }
+
+        public Opcao_Correta Opcao_Correta { get; set; }
     }
 }

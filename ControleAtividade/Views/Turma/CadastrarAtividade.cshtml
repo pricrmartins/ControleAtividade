@@ -1,0 +1,49 @@
+﻿@model ControleAtividade.Models.TurmasViewModels.CadastrarAtividadeViewModel
+@{
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+    ViewData["Title"] = "Cadastrar atividade";
+}
+<div class="modal" id="modal"></div>
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2>@ViewData["Title"]</h2>
+        @if (ViewBag.msgError != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Erro!</strong> @ViewBag.msgError .
+            </div>
+        }
+
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <h4>Criar uma nova atividade.</h4>
+            <hr />
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Turmas"></label>
+                @Html.DropDownListFor(model => model.CodigoTurma, new SelectList(Model.Turmas, "Codigo", "Nome"), htmlAttributes: new { @class = "form-control" })
+                <span asp-validation-for="CodigoTurma" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Atividade"></label>
+                <input asp-for="Atividade" class="form-control" />
+                <span asp-validation-for="Atividade" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Descricao"></label>
+                <textarea asp-for="Descricao" class="form-control"></textarea>
+                <span asp-validation-for="Descricao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tipo"></label>
+                <input asp-for="Tipo" class="form-control" />
+                <span asp-validation-for="Tipo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                Questões
+                <partial name="ListaQuestoes" model="Model" />
+            </div>
+        </form>
+    </div>
+</div>

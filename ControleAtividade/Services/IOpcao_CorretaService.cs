@@ -13,5 +13,7 @@ namespace ControleAtividade.Services
         Task<int> SetOpcao_CorretaAsync(Opcao_Correta opcao_Correta);
 
         Task<int> UpdateOpcao_CorretaAsync(Opcao_Correta opcao_Correta);
+
+        Task<Opcao_Correta> GetOpcaoCorreta(int IdOpcao);
     }
 }

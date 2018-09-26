@@ -105,5 +105,55 @@ namespace ControleAtividade.Controllers
             await _turmaService.UpdateTurmaAsync(turma);
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> CadastrarAtividade()
+        {
+            var usuarioAtual = await _userManager.GetUserAsync(User);
+            Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
+            IEnumerable<Turma> turmas = await _turmaService.GetTurmasPorProfessorAsync(professor.Id);
+            CadastrarAtividadeViewModel cadastrarAtividadeViewModel = new CadastrarAtividadeViewModel
+            {
+                Turmas = turmas.ToList()
+            };
+            return View(cadastrarAtividadeViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarAtividade(CadastrarAtividadeViewModel cadastrarAtividadeViewModel)
+        {
+            var usuarioAtual = await _userManager.GetUserAsync(User);
+            Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
+            IEnumerable<Turma> turmas = await _turmaService.GetTurmasPorProfessorAsync(professor.Id);
+            List<Questao> questoes = new List<Questao>();
+
+            int opcaoCorreta = cadastrarAtividadeViewModel.OpcaoCorreta != null ? int.Parse(cadastrarAtividadeViewModel.OpcaoCorreta) : -1;
+            if (opcaoCorreta != -1)
+            {
+                cadastrarAtividadeViewModel.Opcoes[opcaoCorreta].Opcao_Correta = new Opcao_Correta {Correta = true };
+            }
+            if (cadastrarAtividadeViewModel.Questoes != null)
+            {
+                questoes = cadastrarAtividadeViewModel.Questoes;
+            }
+            questoes.Add(new Questao
+            {
+                Cabecalho = cadastrarAtividadeViewModel.Cabecalho,
+                ListaOpcao = cadastrarAtividadeViewModel.Opcoes,
+                Texto = cadastrarAtividadeViewModel.Texto
+            });
+
+            cadastrarAtividadeViewModel.Questoes = questoes;
+
+            cadastrarAtividadeViewModel.Turmas = turmas.ToList();
+            return View(cadastrarAtividadeViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult CadastrarQuestao(CadastrarAtividadeViewModel cadastrarAtividadeViewModel)
+        {
+            return PartialView();
+        }
+
     }
 }

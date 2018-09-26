@@ -90,5 +90,20 @@ namespace ControleAtividade.Controllers
             }
             return RedirectToAction("Index", "Turma");
         }
+
+        [HttpGet]
+        public async Task<IActionResult> TurmasAluno()
+        {
+            var usuarioAtual = await _userManager.GetUserAsync(User);
+            if (usuarioAtual.TipoUsuario == 1)
+            {
+                Aluno aluno = await _alunoService.GetAlunoPorIdUsuario(usuarioAtual.Id);
+                return View(new TurmasAlunoCadastradoViewModel
+                {
+                    Turmas = await _aluno_Turma_Service.GetTurmasPorAlunoAsync(aluno)
+                });
+            }
+            return RedirectToAction("Index", "Turma");
+        }
     }
 }

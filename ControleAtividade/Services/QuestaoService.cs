@@ -16,9 +16,30 @@ namespace ControleAtividade.Services
         {
             _context = contexto;
         }
+
+        public async Task<Questao> GetQuestaoPorId(int IdQuestao)
+        {
+            var questao = await _context.Questoes
+                .Where(q => q.Id == IdQuestao)
+                .Include(q => q.ListaOpcao)
+                .FirstOrDefaultAsync();
+
+            return questao;
+        }
+
         public async Task<IEnumerable<Questao>> GetQuestoesAsync()
         {
             var questoes = await _context.Questoes.ToArrayAsync();
+
+            return questoes;
+        }
+
+        public async Task<IEnumerable<Questao>> GetQuestoesPorAtividadeAsync(int IdAtividade)
+        {
+            var questoes = await _context.Questoes
+                .Where(questao => questao.IdAtividade == IdAtividade)
+                .Include(questao => questao.ListaOpcao)
+                .ToArrayAsync();
 
             return questoes;
         }

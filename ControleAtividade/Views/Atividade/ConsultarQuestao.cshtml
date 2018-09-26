@@ -1,0 +1,88 @@
+﻿@model ControleAtividade.Models.AtividadesViewModels.ConsultarQuestaoViewModel
+@{
+    ViewData["Title"] = "Questões";
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h1>Atividade - @Model.Atividade.Nome</h1>
+                <h2>@ViewData["Title"]</h2>
+                <hr />
+            </div>
+            <div class=" col-md-offset-4">
+                <div class="col-lg-6">
+                    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="get">
+                        @Html.Hidden("Id", Model.Atividade.Id)
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.Pesquisar, new { htmlAttributes = new { @class = "form-control", placeholder = "Pesquisar questões..." } })
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        Não encontrou?@Html.ActionLink("Clique aqui para cadastrar", "CadastrarQuestao",new { Id = Model.Atividade.Id })
+                    </div>
+                    <br />
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Número")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Cabeçalho")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Texto")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Quantidade de opções")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Questoes != null)
+                    {
+                        @foreach (var item in Model.Questoes)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Numero)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Cabecalho)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Texto)
+                                </td>
+                                <td>
+                                    @if (item.ListaOpcao != null)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.ListaOpcao.Count)
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayName("0")
+                                    }
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Detalhes", "Detalhar", new { Id = item.Id }) |
+                                    @Html.ActionLink("Editar", "EditarQuestao", new { Id = item.Id }) |
+                                    @Html.ActionLink("Cadastrar questão", "CadastrarQuestao", new { Id = item.Id })
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

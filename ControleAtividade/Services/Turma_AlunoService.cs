@@ -30,6 +30,7 @@ namespace ControleAtividade.Services
             var turmas_Aluno = await _context.Turmas_Aluno
                 .Where(turma => turma.IdAluno != IdAluno)
                 .Include(turma => turma.Turma)
+                .Include(turma => turma.Turma.Professor)
                 .ToArrayAsync();
 
             return turmas_Aluno;
@@ -40,6 +41,7 @@ namespace ControleAtividade.Services
             var turmas_Aluno = await _context.Turmas_Aluno
                 .Where(turma => turma.IdAluno == aluno.Id)
                 .Include(turma => turma.Turma)
+                .Include(turma => turma.Turma.Professor)
                 .ToArrayAsync();
 
             return turmas_Aluno;

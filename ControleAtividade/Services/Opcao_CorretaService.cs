@@ -17,6 +17,13 @@ namespace ControleAtividade.Services
             _context = contexto;
         }
 
+        public async Task<Opcao_Correta> GetOpcaoCorreta(int IdOpcao)
+        {
+            var opcao = await _context.Opcoes_Correta.Where(op => op.IdOpcao == IdOpcao).FirstOrDefaultAsync();
+
+            return opcao;
+        }
+
         public async Task<IEnumerable<Opcao_Correta>> GetOpcoesAsync()
         {
             var opcoes = await _context.Opcoes_Correta.ToArrayAsync();

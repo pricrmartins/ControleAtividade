@@ -13,5 +13,7 @@ namespace ControleAtividade.Services
         Task<int> SetAtividadeAsync(Atividade atividade);
 
         Task<int> UpdateAtividadeAsync(Atividade atividade);
+
+        Task<Atividade> GetAtividade(int Id);
     }
 }

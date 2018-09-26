@@ -1,0 +1,72 @@
+﻿@model ControleAtividade.Models.TurmasViewModels.CadastrarAtividadeViewModel
+
+<form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+    <div class="modal fade" name="modalNovoDocumento" id="modalNovoDocumento" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document" style="overflow-y: initial !important">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Cadastrar questão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Cabecalho"></label>
+                        <input asp-for="Atividade" class="form-control" />
+                        <span asp-validation-for="Atividade" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Texto"></label>
+                        <textarea asp-for="Texto" class="form-control"></textarea>
+                        <span asp-validation-for="Texto" class="text-danger"></span>
+                    </div>
+                    <div class="">
+                        <strong>Opções</strong>
+                        <table class="table">
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                            <tr>
+                                <td>Descrição</td>
+
+                                <td><input asp-for="Opcoes[0].Descricao" class="form-control" /></td>
+
+                                <td><input asp-for="OpcaoCorreta" name="OpcaoCorreta" value="0" type="radio" /> Correta</td>
+                            </tr>
+                            <tr>
+                                <td>Descrição</td>
+
+                                <td><input asp-for="Opcoes[1].Descricao" class="form-control" /></td>
+
+                                <td><input asp-for="OpcaoCorreta" name="OpcaoCorreta" value="1" type="radio" /> Correta</td>
+                            </tr>
+                            <tr>
+                                <td>Descrição</td>
+
+                                <td><input asp-for="Opcoes[2].Descricao" class="form-control" /></td>
+
+                                <td><input asp-for="OpcaoCorreta" name="OpcaoCorreta" value="2" type="radio" /> Correta</td>
+                            </tr>
+                            <tr>
+                                <td>Descrição</td>
+
+                                <td><input asp-for="Opcoes[3].Descricao" class="form-control" /></td>
+
+                                <td><input asp-for="OpcaoCorreta" name="OpcaoCorreta" value="3" type="radio" /> Correta</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" id="enviarAuto" class="btn btn-primary" value="Adicionar Questão" />
+                    <button class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

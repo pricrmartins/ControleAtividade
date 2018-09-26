@@ -26,6 +26,7 @@ namespace ControleAtividade.Models
         [Required]
         public int IdAtividade { get; set; }
 
+        [NotMapped]
         public Imagem Imagem { get; set; }
 
         public Atividade Atividade { get; set; }

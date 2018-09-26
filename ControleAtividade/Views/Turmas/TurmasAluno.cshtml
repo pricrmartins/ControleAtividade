@@ -1,0 +1,52 @@
+﻿@model ControleAtividade.Models.TurmasAlunoViewModels.TurmasAlunoCadastradoViewModel
+@{
+    ViewData["Title"] = "Suas turmas";
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h2>Suas turmas</h2>
+                <hr />
+            </div>
+            <br />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Código")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Nome")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Responsável")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Turmas)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Turma.Codigo)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Turma.Nome)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Turma.Professor.ApplicationUser.Nome)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Entrar", "Atividades", "Turmas", new { codigo = item.Turma.Codigo })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
