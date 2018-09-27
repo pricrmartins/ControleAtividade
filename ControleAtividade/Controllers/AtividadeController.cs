@@ -31,18 +31,20 @@ namespace ControleAtividade.Controllers
             _questaoService = questaoService;
             _opcao_Correta = opcao_Correta;
             _opcao = opcao;
+            
         }
 
         public async Task<IActionResult> Index(string Pesquisar = null)
         {
+            Professor professor;
             IEnumerable<Atividade> atividades = await _atividadeService.GetAtividadesAsync();
             var usuarioAtual = await _userManager.GetUserAsync(User);
-
+            
             if (usuarioAtual.TipoUsuario != 2)
             {
                 return RedirectToAction("Index", "Perfil");
             }
-
+            professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
             if (!string.IsNullOrWhiteSpace(Pesquisar))
             {
                 atividades = atividades.Where(atividade => atividade.Nome.ToUpper().Contains(Pesquisar.ToUpper()));
@@ -67,16 +69,24 @@ namespace ControleAtividade.Controllers
         public async Task<IActionResult> Cadastrar(CadastrarAtividadeViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
+            Professor professor;
             if (ModelState.IsValid)
             {
                 var usuarioAtual = await _userManager.GetUserAsync(User);
-                Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
 
                 if (usuarioAtual.TipoUsuario != 2)
                 {
                     return RedirectToAction("Cadastrar", new { msgError = "Necessário estar com o perfil Professor para realizar essa ação." });
                 }
-                await _atividadeService.SetAtividadeAsync(new Atividade { Descricao = model.Descricao, Nome = model.Nome, Tipo = model.Tipo });
+                professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
+                await _atividadeService.SetAtividadeAsync(
+                    new Atividade
+                    {
+                        Descricao = model.Descricao,
+                        Nome = model.Nome,
+                        Tipo = model.Tipo,
+                        IdProfessor = professor.Id
+                    });
             }
             return View();
         }
@@ -85,7 +95,7 @@ namespace ControleAtividade.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             Atividade atividade = await _atividadeService.GetAtividade(id);
-            return View(new DetalharAtividadeViewModel { Atividade = atividade });
+            return View(new EditarAtividadeViewModel { Descricao = atividade.Descricao, Nome = atividade.Nome, Tipo = atividade.Tipo, Id = id });
         }
 
         [HttpGet]
@@ -104,8 +114,7 @@ namespace ControleAtividade.Controllers
             if (ModelState.IsValid)
             {
                 var usuarioAtual = await _userManager.GetUserAsync(User);
-                Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
-
+    
                 if (usuarioAtual.TipoUsuario != 2)
                 {
                     return RedirectToAction("Editar", new { msgError = "Necessário estar com o perfil Professor para realizar essa ação." });

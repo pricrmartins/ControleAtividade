@@ -34,6 +34,15 @@ namespace ControleAtividade.Services
             return atividades;
         }
 
+        public async Task<IEnumerable<Atividade>> GetAtividadesPorProfessorAsync(int IdProfessor)
+        {
+            var atividades = await _context
+                .Atividades.Where(a => a.IdProfessor == IdProfessor).Include(atividade => atividade.ListaQuestao)
+                .ToArrayAsync();
+
+            return atividades;
+        }
+
         public async Task<int> SetAtividadeAsync(Atividade atividade)
         {
             await _context.Atividades.AddAsync(atividade);

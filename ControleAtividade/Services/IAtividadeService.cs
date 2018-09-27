@@ -15,5 +15,7 @@ namespace ControleAtividade.Services
         Task<int> UpdateAtividadeAsync(Atividade atividade);
 
         Task<Atividade> GetAtividade(int Id);
+
+        Task<IEnumerable<Atividade>> GetAtividadesPorProfessorAsync(int IdProfessor);
     }
 }

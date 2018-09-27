@@ -23,6 +23,13 @@ namespace ControleAtividade.Models
         [Required]
         public string Tipo { get; set; }
 
+        [ForeignKey("Professor")]
+        [Required]
+        public int IdProfessor { get; set; }
+
+        [NotMapped]
+        public Professor Professor { get; set; }
+
         public virtual List<Questao> ListaQuestao { get; set; }
     }
 }
