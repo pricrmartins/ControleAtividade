@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using ControleAtividade.Models;
 using ControleAtividade.Models.ManageViewModels;
 using ControleAtividade.Services;
+using ControleAtividade.Models.UtilitariosModel;
 
 namespace ControleAtividade.Controllers
 {
@@ -54,10 +55,10 @@ namespace ControleAtividade.Controllers
             {
                 throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
-
+             
             var model = new IndexViewModel
             {
-                Username = user.UserName,
+                Username = Utilitarios.IncluirFormatacaoCPF(user.UserName),
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 IsEmailConfirmed = user.EmailConfirmed,

@@ -1,0 +1,41 @@
+﻿@model ControleAtividade.Models.AtividadeTurmaViewModels.EditarAtividadeTurmaViewModel
+@{
+    ViewData["Title"] = "Editar atividade na turma";
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <h2>@ViewData["Title"]</h2>
+        @if (ViewBag.msgError != null)
+        {
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Erro!</strong> @ViewBag.msgError .
+            </div>
+        }
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+            <hr />
+            @Html.HiddenFor(model => model.IdAtividadeTurma)
+            @Html.HiddenFor(model => model.CodigoTurma)
+            @Html.HiddenFor(model => model.IdAtividade)
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Turmas"></label>
+                @Html.DropDownListFor(model => model.CodigoTurma, new SelectList(Model.Turmas, "Codigo", "Nome"), htmlAttributes: new { @class = "form-control" , @disabled = "disabled" })
+                <span asp-validation-for="CodigoTurma" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Atividades"></label>
+                @Html.DropDownListFor(model => model.IdAtividade, new SelectList(Model.Atividades, "Id", "Nome"), htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                <span asp-validation-for="CodigoTurma" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input asp-for="Disponivel" class="" />
+                <label asp-for="Disponivel"></label>
+                <span asp-validation-for="Disponivel" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-default">Registrar</button>
+        </form>
+    </div>
+</div>

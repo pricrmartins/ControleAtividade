@@ -11,11 +11,11 @@ namespace ControleAtividade.Models.AtividadesViewModels
         [Required]
         public string Nome { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo descrição é obrigatório.")]
         [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo tipo é obrigatório.")]
         public string Tipo { get; set; }
 
         public int Id { get; set; }

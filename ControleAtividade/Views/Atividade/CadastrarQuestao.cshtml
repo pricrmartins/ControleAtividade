@@ -34,28 +34,40 @@
                     <tr>
                         <td>Descrição</td>
 
-                        <td><input asp-for="Opcoes[0].Descricao" class="form-control" /></td>
+                        <td>
+                            <input asp-for="Opcoes[0].Descricao" class="form-control" />
+                            <span asp-validation-for="Opcoes[0].Descricao" class="text-danger"></span>
+                        </td>
 
                         <td><input asp-for="Selecionado" name="Selecionado" value="0" type="radio" /> Correta</td>
                     </tr>
                     <tr>
                         <td>Descrição</td>
 
-                        <td><input asp-for="Opcoes[1].Descricao" class="form-control" /></td>
-
+                        <td>
+                            <input asp-for="Opcoes[1].Descricao" class="form-control" />
+                            <span asp-validation-for="Opcoes[1].Descricao" class="text-danger"></span>
+                        </td>
+                        
                         <td><input asp-for="Selecionado" name="Selecionado" value="1" type="radio" /> Correta</td>
                     </tr>
                     <tr>
                         <td>Descrição</td>
 
-                        <td><input asp-for="Opcoes[2].Descricao" class="form-control" /></td>
+                        <td>
+                            <input asp-for="Opcoes[2].Descricao" class="form-control" />
+                            <span asp-validation-for="Opcoes[2].Descricao" class="text-danger"></span>
+                        </td>
 
                         <td><input asp-for="Selecionado" name="Selecionado" value="2" type="radio" /> Correta</td>
                     </tr>
                     <tr>
                         <td>Descrição</td>
 
-                        <td><input asp-for="Opcoes[3].Descricao" class="form-control" /></td>
+                        <td>
+                            <input asp-for="Opcoes[3].Descricao" class="form-control" />
+                            <span asp-validation-for="Opcoes[3].Descricao" class="text-danger"></span>
+                        </td>
 
                         <td><input asp-for="Selecionado" name="Selecionado" value="3" type="radio" /> Correta</td>
                     </tr>

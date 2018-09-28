@@ -1,0 +1,76 @@
+﻿@model ControleAtividade.Models.AtividadeTurmaViewModels.ConsultarAtividadeTurmaViewModel
+@{
+    ViewData["Title"] = "Consultar atividades da turma";
+    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-12">
+            <div class="text-center">
+                <h2>@ViewData["Title"]</h2>
+                <hr />
+            </div>
+            <div class=" col-md-offset-4">
+                <div class="col-lg-6">
+                    <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="get">
+                        @Html.Hidden("CodigoTurma", Model.CodigoTurma)
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.Pesquisar, new { htmlAttributes = new { @class = "form-control", placeholder = "Pesquisar atividade..." } })
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </span>
+                        </div>
+                    </form>
+                    <div class="text-center">
+                        Não encontrou?@Html.ActionLink("Clique aqui para cadastrar", "Index")
+                    </div>
+                    <br />
+                </div>
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayName("Nome")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Descrição")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Tipo")
+                        </th>
+                        <th>
+                            @Html.DisplayName("Disponível ")
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AtividadesTurma)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atividade.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atividade.Descricao)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atividade.Tipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Disponivel)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detalhes", "Detalhar", new { codigo = item.Id }) |
+                            @Html.ActionLink("Editar", "Editar", new { IdAtividadeTurma = item.Id })
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

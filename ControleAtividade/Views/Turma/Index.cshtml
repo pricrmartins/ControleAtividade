@@ -60,7 +60,7 @@
                             <td>
                                 @Html.ActionLink("Detalhes", "Detalhar", new { codigo = item.Codigo }) |
                                 @Html.ActionLink("Editar", "Editar", new { codigo = item.Codigo }) |
-                                @Html.ActionLink("Cadastrar atividade", "CadastrarAtividade", new { codigo = item.Codigo })
+                                @Html.ActionLink("Cadastrar atividade", "Index","AtividadeTurma", new { CodigoTurma = item.Codigo })
                             </td>
                         </tr>
                     }

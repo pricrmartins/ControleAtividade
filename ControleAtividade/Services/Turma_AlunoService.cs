@@ -25,6 +25,17 @@ namespace ControleAtividade.Services
             return turma_Aluno != null ? true : false;
         }
 
+        public async Task<IEnumerable<Turma_Aluno>> GetAlunosPorProfessorAsync(int IdProfessor)
+        {
+            var turmas_Aluno = await _context.Turmas_Aluno
+                .Include(turma => turma.Turma)
+                .Include(turma => turma.Turma.Professor)
+                .Where(turma => turma.Turma.IdProfessor == IdProfessor)
+                .ToArrayAsync();
+
+            return turmas_Aluno;
+        }
+
         public async Task<IEnumerable<Turma_Aluno>> GetTurmasDiferenteAlunoAsync(int IdAluno)
         {
             var turmas_Aluno = await _context.Turmas_Aluno

@@ -16,5 +16,9 @@ namespace ControleAtividade.Services
 
         Task<IEnumerable<Atividade_Turma>> GetAtividadesTurmaCodigoAsync(string codigo);
 
+        Task<Atividade_Turma> GetAtividadeTurmaAsync(int IdAtividadeTurma);
+
+        Task<Atividade_Turma> ExisteAtividadeAtivaNaTurma(string CodigoTurma, int IdAtividade);
+
     }
 }

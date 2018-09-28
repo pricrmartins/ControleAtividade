@@ -8,14 +8,14 @@ namespace ControleAtividade.Models.AtividadesViewModels
 {
     public class CadastrarAtividadeViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Campo nome é obrigatório.")]
         public string Nome { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo descrição é obrigatório.")]
         [Display(Name ="Descrição")]
         public string Descricao { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo tipo é obrigatório.")]
         public string Tipo { get; set; }
     }
 }

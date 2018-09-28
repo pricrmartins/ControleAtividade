@@ -8,16 +8,16 @@ namespace ControleAtividade.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-        [Required]
-        [StringLength(11, ErrorMessage = "O campo deve ter 11 caracteres.", MinimumLength = 11)]
+        [Required(ErrorMessage ="Campo CPF é obrigatório.")]
+        [StringLength(14, ErrorMessage = "O campo deve ter 11 caracteres.", MinimumLength = 14)]
         public string CPF { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo senha é obrigatório.")]
         [Display(Name = "Senha")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Lembrar?")]
         public bool RememberMe { get; set; }
     }
 }

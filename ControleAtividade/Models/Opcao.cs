@@ -14,7 +14,8 @@ namespace ControleAtividade.Models
         [Required]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo descrição é obrigatório.")]
+        [Display(Name = "Descrição")]
         public string Descricao { get; set; }
 
         [ForeignKey("Questao")]

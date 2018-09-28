@@ -5,17 +5,17 @@ namespace ControleAtividade.Models.AtividadesViewModels
 {
     public class EditarQuestaoViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "Campo cabeçalho é obrigatório.")]
         [Display(Name = "Cabeçalho")]
         public string Cabecalho { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo texto é obrigatório.")]
         public string Texto { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo opções é obrigatório.")]
         public List<Opcao> Opcoes { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Campo correta é obrigatório.")]
         public string Selecionado { get; set; }
 
         public int IdQuestao { get; set; }

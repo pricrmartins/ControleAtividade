@@ -14,6 +14,7 @@ using ControleAtividade.Models;
 using ControleAtividade.Models.AccountViewModels;
 using ControleAtividade.Services;
 using ControleAtividade.Data;
+using ControleAtividade.Models.UtilitariosModel;
 
 namespace ControleAtividade.Controllers
 {
@@ -65,7 +66,8 @@ namespace ControleAtividade.Controllers
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(model.CPF, model.Password, model.RememberMe, lockoutOnFailure: false);
+                string CPF = Utilitarios.RemoverFormatacaoCPF(model.CPF);
+                var result = await _signInManager.PasswordSignInAsync(CPF, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
@@ -224,7 +226,8 @@ namespace ControleAtividade.Controllers
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.CPF, Email = model.Email, Nome = model.Nome };
+                string CPF = Utilitarios.RemoverFormatacaoCPF(model.CPF);
+                var user = new ApplicationUser { UserName = CPF, Email = model.Email, Nome = model.Nome };
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
