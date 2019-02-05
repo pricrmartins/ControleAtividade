@@ -17,5 +17,7 @@ namespace ControleAtividade.Services
         Task<int> UpdateAlunoAsync(Aluno aluno);
 
         Task<Aluno> GetAlunoPorIdUsuario(string Id);
+
+        Task<Aluno> GetAlunoPorIdAlunoAsync(int Id);
     }
 }

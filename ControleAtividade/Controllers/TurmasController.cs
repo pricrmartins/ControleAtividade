@@ -34,18 +34,31 @@ namespace ControleAtividade.Controllers
         {
             ViewData["ReturnUrl"] = returnUrl;
             var usuarioAtual = await _userManager.GetUserAsync(User);
-            IEnumerable<Turma> turmas;
+            IEnumerable<Turma> todasTurmas;
+            IEnumerable<Turma_Aluno> turmasPorAluno;
             if (usuarioAtual.TipoUsuario == 1)
             {
                 Aluno aluno = await _alunoService.GetAlunoPorIdUsuario(usuarioAtual.Id);
-                turmas = await _turmaService.GetTurmasAsync();
+                List<TurmasAluno> turmasAluno = new List<TurmasAluno>();
+                
+                turmasPorAluno = await _aluno_Turma_Service.GetTurmasPorAlunoAsync(aluno);
+                foreach (var item in turmasPorAluno)
+                {
+                    turmasAluno.Add(new TurmasAluno { Codigo = item.CodigoTuma, Nome = item.Turma.Nome, Responsavel = item.Turma.Professor.ApplicationUser.Nome, Status = item.Status.ToString()});
+                }
+                todasTurmas = await _turmaService.GetTurmasAsync();
+                todasTurmas = todasTurmas.Where(a => !turmasPorAluno.Any(a2 => a2.CodigoTuma.Equals(a.Codigo)));
+                foreach (var item in todasTurmas)
+                {
+                    turmasAluno.Add(new TurmasAluno { Codigo = item.Codigo, Nome = item.Nome, Responsavel = item.Professor.ApplicationUser.Nome, Status = "Não solicitado" });
+                }
                 if (!string.IsNullOrWhiteSpace(Pesquisar))
                 {
-                    turmas = turmas.Where(t => t.Codigo.ToUpper().Contains(Pesquisar.ToUpper()) || t.Nome.ToUpper().Contains(Pesquisar.ToUpper()));
+                    turmasAluno = turmasAluno.Where(t => t.Codigo.ToUpper().Contains(Pesquisar.ToUpper()) || t.Nome.ToUpper().Contains(Pesquisar.ToUpper())).ToList();
                 }
                 return View(new ConsultarTurmasAlunoViewModel
                 {
-                    Turmas = turmas
+                    TurmasAluno = turmasAluno
                 });
             }
             return RedirectToAction("Index", "Turma");
@@ -74,7 +87,7 @@ namespace ControleAtividade.Controllers
                     ViewBag.Erro = "Você já está cadastrado na turma!";
                     return View(new DetalharTurmaViewModel { Turma = turma });
                 }
-                if (turma.IdProfessor != professor.Id)
+                if (professor == null ||turma.IdProfessor != professor.Id)
                 {
                     Turma_Aluno turma_Aluno = new Turma_Aluno { CodigoTuma = detalharTurmaViewModel.Turma.Codigo, Status = Turma_Aluno.StatusTurma.Pendente, IdAluno = aluno.Id };
                     await _aluno_Turma_Service.SetTurma_AlunoAsync(turma_Aluno);

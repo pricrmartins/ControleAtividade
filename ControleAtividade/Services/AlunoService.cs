@@ -25,6 +25,16 @@ namespace ControleAtividade.Services
             return aluno;
         }
 
+        public async Task<Aluno> GetAlunoPorIdAlunoAsync(int Id)
+        {
+            var aluno = await _context.Alunos
+                .Include(a => a.ApplicationUser)
+                .Where(a => a.Id == Id)
+                .SingleOrDefaultAsync();
+
+            return aluno;
+        }
+
         public async Task<Aluno> GetAlunoPorIdUsuario(string Id)
         {
             var aluno = await _context.Alunos

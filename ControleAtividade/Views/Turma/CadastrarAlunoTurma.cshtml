@@ -1,29 +1,29 @@
-﻿@model ControleAtividade.Models.TurmasAlunoViewModels.ConsultarTurmasAlunoViewModel
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+﻿@model ControleAtividade.Models.TurmasViewModels.CadastrarAlunoTurmaViewModel
 
 @{
-    ViewData["Title"] = "Turmas";
-    Layout = "~/Views/Shared/_LayoutGenerico.cshtml";
+    ViewData["Title"] = "Solicitações";
+    Layout = "~/Views/Shared/_LayoutProfessor.cshtml";
 }
-
 <div class="row">
     <div class="col-md-12">
         <div class="col-md-12">
             <div class="text-center">
-                <h2>Turmas</h2>
+                <h2>@ViewData["Title"]</h2>
                 <hr />
             </div>
             <div class=" col-md-offset-4">
                 <div class="col-lg-6">
                     <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="get">
                         <div class="input-group">
-                            @Html.EditorFor(model => model.Pesquisar, new { htmlAttributes = new { @class = "form-control", placeholder = "Pesquisar turmas..." } })
+                            @Html.EditorFor(model => model.Pesquisar, new { htmlAttributes = new { @class = "form-control", placeholder = "Pesquisar alunos..." } })
                             <span class="input-group-btn">
                                 <button class="btn btn-primary" type="submit">Buscar</button>
                             </span>
                         </div>
                     </form>
+                    <div class="text-center">
+                        Não encontrou?@Html.ActionLink("Clique aqui para vincular", "Vincular")
+                    </div>
                     <br />
                 </div>
             </div>
@@ -38,36 +38,26 @@
                             @Html.DisplayName("Nome")
                         </th>
                         <th>
-                            @Html.DisplayName("Responsável")
-                        </th>
-                        <th>
-                            @Html.DisplayName("Status")
+                            @Html.DisplayName("Aluno")
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var item in Model.TurmasAluno)
+                    @foreach (var item in Model.Turma_Alunos)
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Codigo)
+                                @Html.DisplayFor(modelItem => item.CodigoTuma)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Nome)
+                                @Html.DisplayFor(modelItem => item.Turma.Nome)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Responsavel)
+                                @Html.DisplayFor(modelItem => item.Aluno.ApplicationUser.Nome)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Status)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Detalhes", "Detalhar", "Turma", new { codigo = item.Codigo }) 
-                                @if (item.Status.Equals("Não solicitado"))
-                                {
-                                    @Html.DisplayName(" | "); @Html.ActionLink("Solicitar entrada", "SolicitarEntrada", "Turmas", new { codigo = item.Codigo });
-                                }
+                                @Html.ActionLink("Cadastrar aluno", "Index", "AtividadeTurma", new { CodigoTurma = item.CodigoTuma, IdAluno = item.IdAluno })
                             </td>
                         </tr>
                     }
@@ -76,4 +66,3 @@
         </div>
     </div>
 </div>
-

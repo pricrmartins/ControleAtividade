@@ -53,6 +53,7 @@ namespace ControleAtividade.Services
                 .Where(turma => turma.IdAluno == aluno.Id)
                 .Include(turma => turma.Turma)
                 .Include(turma => turma.Turma.Professor)
+                .Include(turma => turma.Turma.Professor.ApplicationUser)
                 .ToArrayAsync();
 
             return turmas_Aluno;
@@ -84,6 +85,14 @@ namespace ControleAtividade.Services
             var resultado = await _context.SaveChangesAsync();
 
             return resultado;
+        }
+
+        public async Task<int> VincularAlunoTurma(string CodigoTurma, Professor professor, int IdAluno)
+        {
+            var turma_Aluno = await _context.Turmas_Aluno.Where(a => a.CodigoTuma.Equals(CodigoTurma)
+                                                                    && a.Turma.IdProfessor == professor.Id
+                                                                    && a.IdAluno == IdAluno).FirstOrDefaultAsync();
+            return (await UpdateTurma_AlunoAsync(turma_Aluno));
         }
     }
 }

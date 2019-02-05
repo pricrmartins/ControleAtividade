@@ -18,6 +18,8 @@ namespace ControleAtividade.Services
 
         Task<IEnumerable<Turma_Aluno>> GetAlunosPorProfessorAsync(int IdProfessor);
 
+        Task<int> VincularAlunoTurma(string CodigoTurma, Professor professor, int IdAluno);
+
         Task<IEnumerable<Turma_Aluno>> GetTurmasDiferenteAlunoAsync(int IdAluno);
 
         Task<bool> ExisteAlunoVinculadoNaTurma(int IdAluno, string CodigoTurma);

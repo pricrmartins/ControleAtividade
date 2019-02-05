@@ -18,13 +18,17 @@ namespace ControleAtividade.Controllers
         private readonly ITurmaService _turmaService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IProfessorService _professorService;
+        private readonly ITurma_AlunoService _turma_AlunoService;
+        private readonly IAlunoService _alunoService;
 
         public TurmaController(UserManager<ApplicationUser> userManager,
-            ITurmaService turmaService, IProfessorService professorService)
+            ITurmaService turmaService, IProfessorService professorService, ITurma_AlunoService turma_AlunoService, IAlunoService alunoService)
         {
             _userManager = userManager;
             _turmaService = turmaService;
             _professorService = professorService;
+            _turma_AlunoService = turma_AlunoService;
+            _alunoService = alunoService;
         }
         [HttpGet]
         public async Task<IActionResult> Index(string returnUrl = null, string Pesquisar = null)
@@ -153,6 +157,44 @@ namespace ControleAtividade.Controllers
         public ActionResult CadastrarQuestao(CadastrarAtividadeViewModel cadastrarAtividadeViewModel)
         {
             return PartialView();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CadastrarAlunoTurma(string returnUrl = null)
+        {
+            var usuarioAtual = await _userManager.GetUserAsync(User);
+            Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
+            IEnumerable<Turma> turmas = await _turmaService.GetTurmasPorProfessorAsync(professor.Id);
+            IEnumerable<Turma_Aluno> turma_Alunos = await _turma_AlunoService.GetAlunosPorProfessorAsync(professor.Id);
+            foreach (var item in turma_Alunos)
+            {
+                item.Aluno = await _alunoService.GetAlunoPorIdAlunoAsync(item.IdAluno);
+            }
+            CadastrarAlunoTurmaViewModel cadastrarAlunoTurmaViewModel = new CadastrarAlunoTurmaViewModel
+            {
+                Turma_Alunos = turma_Alunos
+            };
+            return View(cadastrarAlunoTurmaViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CadastrarAluno(string CodigoTurma , int IdAluno, string returnUrl = null)
+        {
+            var usuarioAtual = await _userManager.GetUserAsync(User);
+            Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
+            int resultado = await _turma_AlunoService.VincularAlunoTurma(CodigoTurma, professor, IdAluno);
+            if (resultado > 0)
+            {
+                ViewBag.Erro = null;
+                ViewBag.Sucesso = "Aluno vinculado com sucesso!";
+            }
+            else
+            {
+                ViewBag.Erro = "Não foi possível vincular aluno à turma!";
+                ViewBag.Sucesso = null;
+            }
+
+            return RedirectToAction("CadastrarAlunoTurma", "Turma");
         }
 
     }
