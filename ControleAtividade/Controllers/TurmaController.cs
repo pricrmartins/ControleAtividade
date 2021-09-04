@@ -160,7 +160,7 @@ namespace ControleAtividade.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> CadastrarAlunoTurma(string returnUrl = null)
+        public async Task<IActionResult> CadastrarAlunoTurma(string msgSucesso = null, string msgError = null)
         {
             var usuarioAtual = await _userManager.GetUserAsync(User);
             Professor professor = await _professorService.GetProfessorPorCPFAsync(usuarioAtual.UserName);
@@ -185,16 +185,13 @@ namespace ControleAtividade.Controllers
             int resultado = await _turma_AlunoService.VincularAlunoTurma(CodigoTurma, professor, IdAluno);
             if (resultado > 0)
             {
-                ViewBag.Erro = null;
-                ViewBag.Sucesso = "Aluno vinculado com sucesso!";
+                return RedirectToAction("CadastrarAlunoTurma", new { msgSucesso = "Aluno vinculado com sucesso!" });
+
             }
             else
             {
-                ViewBag.Erro = "Não foi possível vincular aluno à turma!";
-                ViewBag.Sucesso = null;
+                return RedirectToAction("CadastrarAlunoTurma", new { msgError = "Necessário estar com o perfil Professor para realizar essa ação." });
             }
-
-            return RedirectToAction("CadastrarAlunoTurma", "Turma");
         }
 
     }

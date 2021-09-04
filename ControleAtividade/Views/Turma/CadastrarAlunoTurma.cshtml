@@ -9,6 +9,20 @@
         <div class="col-md-12">
             <div class="text-center">
                 <h2>@ViewData["Title"]</h2>
+                @if (ViewBag.msgSucesso != null)
+                {
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        @ViewBag.msgSucesso
+                    </div>
+                }
+                @if (ViewBag.msgError != null)
+                {
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        @ViewBag.msgError
+                    </div>
+                }
                 <hr />
             </div>
             <div class=" col-md-offset-4">
@@ -21,9 +35,6 @@
                             </span>
                         </div>
                     </form>
-                    <div class="text-center">
-                        Não encontrou?@Html.ActionLink("Clique aqui para vincular", "Vincular")
-                    </div>
                     <br />
                 </div>
             </div>
@@ -57,7 +68,7 @@
                                 @Html.DisplayFor(modelItem => item.Aluno.ApplicationUser.Nome)
                             </td>
                             <td>
-                                @Html.ActionLink("Cadastrar aluno", "Index", "AtividadeTurma", new { CodigoTurma = item.CodigoTuma, IdAluno = item.IdAluno })
+                                @Html.ActionLink("Cadastrar aluno", "CadastrarAluno", "Turma", FormMethod.Post, new { CodigoTurma = item.CodigoTuma, IdAluno = item.IdAluno })
                             </td>
                         </tr>
                     }
